@@ -1,26 +1,28 @@
 'use strict';
 
+// load modules
 const mongoose = require('mongoose');
-
-const { Schema } = mongoose;
+const { Schema, model } = mongoose;
 
 // user schema
 const UserSchema = new Schema({
-    firstName: String,
-    lastName: String,
-    emailAddress: String,
-    password: String,
+  firstName: String,
+  lastName: String,
+  emailAddress: String,
+  password: String,
 });
 
 // course schema
 const CourseSchema = new Schema({
-    user: { type: Schema.Types.ObjectId, ref: 'User' },
-    title: String,
-    description: String,
-    estimatedTime: String,
-    materialsNeeded: String,
+  user: { type: Schema.Types.ObjectId, ref: 'User' },
+  title: String,
+  description: String,
+  estimatedTime: String,
+  materialsNeeded: String,
 });
 
 // define models
-const User = mongoose.model('User', UserSchema);
-const Course = mongoose.model('Course', CourseSchema);
+const User = model('User', UserSchema);
+const Course = model('Course', CourseSchema);
+
+module.exports.User = User;

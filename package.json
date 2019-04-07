@@ -7,6 +7,10 @@
     "start": "nodemon ./app.js",
     "seed": "cross-env DB_ENABLE_LOGGING=true node './seed'"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mmgolden/school-rest-api.git"
+  },
   "keywords": [],
   "author": "Melinda Golden",
   "license": "ISC",
@@ -14,6 +18,7 @@
     "nodemon": "^1.18.10"
   },
   "dependencies": {
+    "basic-auth": "^2.0.1",
     "bcryptjs": "^2.4.3",
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
