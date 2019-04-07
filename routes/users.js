@@ -4,11 +4,13 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('basic-auth');
-const User = require('./models').User;
+const { User } = require('../models');
 
-// handles creating a new user
-router.post('/users', (req, res) => {
-  const user = new User(req.body);
+// POST handles creating a new user
+router.post('/', (req, res) => {
+  const { body } = req;
+  const user = new User(body);
+  
 	user.save((err) => {
     if(err) return next(err);
     res.location('/');
@@ -16,8 +18,8 @@ router.post('/users', (req, res) => {
 	});
 });
 
-// handles returning the current authenticated user
-router.get('/users', (req, res) => {
+// GET handles returning the current authenticated user
+router.get('/', (req, res) => {
   
 });
 

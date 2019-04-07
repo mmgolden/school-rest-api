@@ -4,7 +4,8 @@
 const express = require('express');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
-const routes = require('./routes');
+const usersRoute = require('./routes/users');
+const coursesRoute = require('./routes/courses');
 
 // connect mongoose to database
 mongoose.connect('mongodb://localhost:27017/fsjstd-restapi', { useNewUrlParser: true });
@@ -33,7 +34,8 @@ app.use(express.json());
 app.use(morgan('dev'));
 
 // routes
-app.use('/api', routes);
+app.use('/api/users', usersRoute);
+app.use('/api/courses', coursesRoute);
 
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
@@ -51,12 +53,14 @@ app.use((req, res) => {
 
 // setup a global error handler
 app.use((err, req, res, next) => {
+  const { stack, status, message } = err;
+
   if (enableGlobalErrorLogging) {
-    console.error(`Global error handler: ${JSON.stringify(err.stack)}`);
+    console.error(`Global error handler: ${JSON.stringify(stack)}`);
   }
 
-  res.status(err.status || 500).json({
-    message: err.message,
+  res.status(status || 500).json({
+    message,
     error: {},
   });
 });
