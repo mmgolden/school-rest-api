@@ -3,6 +3,21 @@
 // load modules
 const express = require('express');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
+
+// connect mongoose to database
+mongoose.connect("mongodb://localhost:27017/fsjstd-restapi");
+const { connection } = mongoose;
+
+// handle error connecting to the database
+connection.on('error', (err) => {
+	console.error('connection error:', err);
+});
+
+// handle when the connection has been successfully opened
+connection.once('open', () => {
+	console.log('database connection successful');
+});
 
 // variable to enable global error logging
 const enableGlobalErrorLogging = process.env.ENABLE_GLOBAL_ERROR_LOGGING === 'true';
@@ -18,7 +33,7 @@ app.use(morgan('dev'));
 // setup a friendly greeting for the root route
 app.get('/', (req, res) => {
   res.json({
-    message: 'Welcome to the REST API project!',
+    message: 'Welcome to the school REST API!',
   });
 });
 
