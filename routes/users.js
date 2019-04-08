@@ -7,10 +7,10 @@ const auth = require('basic-auth');
 const { User } = require('../models');
 
 // POST handles creating a new user
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const { body } = req;
   const user = new User(body);
-  
+
 	user.save((err) => {
     if(err) return next(err);
     res.location('/');
@@ -19,7 +19,7 @@ router.post('/', (req, res) => {
 });
 
 // GET handles returning the current authenticated user
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   
 });
 

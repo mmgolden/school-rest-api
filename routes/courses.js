@@ -6,7 +6,7 @@ const router = express.Router();
 const { Course } = require('../models');
 
 // POST handles creating a new course
-router.post('/', (req, res) => {
+router.post('/', (req, res, next) => {
   const { body } = req;
   const course = new Course(body);
 
@@ -33,7 +33,7 @@ router.param('id', (req, res, next, id) => {
 });
 
 // GET handles returning a list of courses
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
   Course.find({})
     .exec((err, course) => {
       if(err) return next(err);
@@ -50,7 +50,7 @@ router.get('/:id', (req, res, next) => {
 });
 
 // PUT handles updating a course
-router.put('/:id', (req, res) => {
+router.put('/:id', (req, res, next) => {
   const { course, body } = req;
 
 	course.update(body, (err) => {
@@ -60,7 +60,7 @@ router.put('/:id', (req, res) => {
 });
 
 // DELETE handles deleting a course
-router.delete('/:id', (req, res) => {
+router.delete('/:id', (req, res, next) => {
   const { course } = req;
 
 	course.remove((err) => {

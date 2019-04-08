@@ -6,17 +6,35 @@ const { Schema, model } = mongoose;
 
 // user schema
 const UserSchema = new Schema({
-  firstName: String,
-  lastName: String,
-  emailAddress: String,
-  password: String,
+  firstName: {
+    type: String,
+    required: 'First name is required',
+  },
+  lastName: {
+    type: String,
+    required: 'Last name is required',
+  },
+  emailAddress: {
+    type: String,
+    required: 'Email address is required',
+  },
+  password: {
+    type: String,
+    required: 'Password is required',
+  },
 });
 
 // course schema
 const CourseSchema = new Schema({
   user: { type: Schema.Types.ObjectId, ref: 'User' },
-  title: String,
-  description: String,
+  title: {
+    type: String,
+    required: 'Title is required',
+  },
+  description: {
+    type: String,
+    required: 'Description is required',
+  },
   estimatedTime: String,
   materialsNeeded: String,
 });
