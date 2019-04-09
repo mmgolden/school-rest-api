@@ -59,10 +59,14 @@ app.use((err, req, res, next) => {
     console.error(`Global error handler: ${JSON.stringify(stack)}`);
   }
 
-  res.status(status || 500).json({
-    message,
-    error: {},
-  });
+  if (err.name === 'ValidationError') {
+    res.status(400).json({ message });
+  } else {
+    res.status(status || 500).json({
+      message,
+      error: {},
+    });
+  }
 });
 
 // set our port
