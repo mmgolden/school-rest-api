@@ -25,27 +25,29 @@ const authenticateUser = (req, res, next) => {
   let message = null;
 
   const credentials = auth(req);
-  const { name, pass } = credentials;
   
   if (credentials) {
-    User.findOne({ emailAddress: name }, (err, user) => {
-      if(err) return next(err);
-      const { password, emailAddress } = user;
+    const { name, pass } = credentials;
 
-      if (user) {
-        const authenticated = bcryptjs
-          .compareSync(pass, password);
-
-        if (authenticated) {
-          console.log(`Authentication successful for: ${emailAddress}`);
-          req.currentUser = user;
+    User.findOne({ emailAddress: name })
+      .then(user => {
+        if (user) {
+          const { password, emailAddress } = user;
+    
+          const authenticated = bcryptjs
+            .compareSync(pass, password);
+    
+          if (authenticated) {
+            console.log(`Authentication successful for: ${emailAddress}`);
+            req.currentUser = user;
+          } else {
+            message = `Authentication failure for: ${emailAddress}`;
+          }
         } else {
-          message = `Authentication failure for: ${emailAddress}`;
+          message = `User not found for: ${name}`;
         }
-      } else {
-        message = `User not found for: ${name}`;
-      }
-    });
+      });
+    
   } else {
     message = 'Auth header not found';
   }
@@ -61,8 +63,7 @@ const authenticateUser = (req, res, next) => {
 
 // GET handles returning the current authenticated user
 router.get('/', authenticateUser, (req, res, next) => {
-  const user = req.currentUser;
-  console.log(user);
+  console.log(req.currentUser);
 });
 
 module.exports = router;
