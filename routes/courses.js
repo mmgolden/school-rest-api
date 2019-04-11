@@ -4,9 +4,10 @@
 const express = require('express');
 const router = express.Router();
 const { Course } = require('../models');
+const { authenticateUser } = require('./users');
 
 // POST handles creating a new course
-router.post('/', (req, res, next) => {
+router.post('/', authenticateUser, (req, res, next) => {
   const { body } = req;
   const course = new Course(body);
 
@@ -50,17 +51,17 @@ router.get('/:id', (req, res, next) => {
 });
 
 // PUT handles updating a course
-router.put('/:id', (req, res, next) => {
+router.put('/:id', authenticateUser, (req, res, next) => {
   const { course, body } = req;
 
-	course.update(body, (err) => {
+	course.save(body, (err) => {
 		if(err) return next(err);
     res.status(204).end();
 	});
 });
 
 // DELETE handles deleting a course
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', authenticateUser, (req, res, next) => {
   const { course } = req;
 
 	course.remove((err) => {
@@ -69,4 +70,4 @@ router.delete('/:id', (req, res, next) => {
 	});
 });
 
-module.exports = router;
+module.exports = { router };
