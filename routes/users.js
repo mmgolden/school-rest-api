@@ -30,7 +30,7 @@ router.post('/', (req, res, next) => {
       }
     });
   } else {
-    res.status(400).json({ message: 'Body is empty' });
+    res.status(400).json({ message: 'Incomplete data' });
   }
   
 });
