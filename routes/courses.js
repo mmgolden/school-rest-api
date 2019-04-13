@@ -76,11 +76,11 @@ router.put('/:id', authenticateUser, (req, res, next) => {
   if (req.course) {
     let { course, body, currentUser } = req;
 
-    if (course.user == currentUser.id) {
+    if (course.user.id == currentUser.id) {
       course.updateOne(body, (err) => {
         if(err) return next(err);
         res.status(204).end();
-      })
+      });
     } else {
       res.status(403).json({ message: 'Access denied' });
     }
@@ -92,12 +92,16 @@ router.put('/:id', authenticateUser, (req, res, next) => {
 // DELETE handles deleting a course
 router.delete('/:id', authenticateUser, (req, res, next) => {
   if (req.course) {
-    const { course } = req;
+    const { course, currentUser } = req;
 
-    course.remove((err) => {
-      if(err) return next(err);
-      res.status(204).end();
-    });
+    if (course.user.id == currentUser.id) {
+      course.remove((err) => {
+        if(err) return next(err);
+        res.status(204).end();
+      });
+    } else {
+      res.status(403).json({ message: 'Access denied' });
+    }
   } else {
     res.status(404).json({ message: 'Course not found' });
   }
