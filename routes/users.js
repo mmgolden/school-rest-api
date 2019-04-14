@@ -11,7 +11,7 @@ const { User } = require('../models');
 router.post('/', (req, res, next) => {
   const { body } = req;
 
-  if (body.emailAddress) {
+  if (body.firstName && body.lastName && body.emailAddress && body.password) {
     const { emailAddress } = body;
 
     User.findOne({ emailAddress }, (err, user) => {
